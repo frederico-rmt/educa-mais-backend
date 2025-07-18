@@ -1,0 +1,7 @@
+uvicorn[standard]
+fastapi
+psycopg
+psycopg-pool
+alembic
+bcrypt
+python-dotenv
