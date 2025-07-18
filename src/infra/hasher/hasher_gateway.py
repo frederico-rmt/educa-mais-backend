@@ -1,4 +1,4 @@
-from app.infra.hasher.hasher import IHasher
+from src.infra.hasher.hasher import IHasher
 
 class HasherGateway(IHasher):
   def __init__(self, hasher: IHasher):

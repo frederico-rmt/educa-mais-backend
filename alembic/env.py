@@ -28,7 +28,11 @@ target_metadata = None
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-load_dotenv(dotenv_path=".env.test", override=True)
+env = os.getenv("APP_ENV", "dev")
+
+dotenv_path = f".env.{env}"
+
+load_dotenv(dotenv_path=dotenv_path, override=True)
 
 def get_url():
     host = os.getenv('PG_HOST')

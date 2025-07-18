@@ -1,7 +1,7 @@
 # app/interfaces/database.py
 from abc import ABC, abstractmethod
 from typing import Any
-from app.domain.entities.user import User
+from src.domain.entities.user import User
 
 class IUserRepository(ABC):
 

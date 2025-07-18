@@ -1,5 +1,5 @@
 import pytest
-from app.domain.value_objects.raw_password import RawPassword
+from src.domain.value_objects.raw_password import RawPassword
 
 @pytest.mark.parametrize("valid_password", [
   "Senha123456"

@@ -1,5 +1,5 @@
 from psycopg_pool import AsyncConnectionPool
-from app.infra.database.database_driver import IDatabaseDriver
+from src.infra.database.database_driver import IDatabaseDriver
 
 class PgDriver(IDatabaseDriver):
   def __init__(self, host: str, port: int, database: str, user: str, password: str):

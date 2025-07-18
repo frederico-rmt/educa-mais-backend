@@ -1,5 +1,5 @@
 import pytest
-from app.domain.value_objects.email import Email
+from src.domain.value_objects.email import Email
 
 @pytest.mark.parametrize("valid_email", [
     "teste@dominio.com",

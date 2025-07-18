@@ -1,5 +1,5 @@
 import bcrypt
-from app.infra.hasher.hasher import IHasher
+from src.infra.hasher.hasher import IHasher
 
 class BCryptDriver(IHasher):
   def __init__(self, salts_number: int):

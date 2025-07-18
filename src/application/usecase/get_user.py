@@ -1,4 +1,4 @@
-from app.application.repository.user_repository import IUserRepository
+from src.application.repository.user_repository import IUserRepository
 
 class GetUser():
   def __init__(self, user_repository: IUserRepository):
