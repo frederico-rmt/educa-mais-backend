@@ -5,3 +5,6 @@ psycopg-pool
 alembic
 bcrypt
 python-dotenv
+pyjwt
+cryptography
+jwcrypto
