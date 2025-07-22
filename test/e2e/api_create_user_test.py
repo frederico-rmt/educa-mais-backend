@@ -19,8 +19,7 @@ async def test_should_create_and_get_user():
     }
     create_response = await client.post(
       f"{os.getenv('APPLICATION_URL')}/users",
-      json=input_data,
-      headers=headers
+      json=input_data
     )
     assert create_response.status_code == 201 or create_response.status_code == 200
     get_response = await client.get(
