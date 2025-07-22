@@ -29,7 +29,8 @@ def setup_user_data():
   return {
     "email": f"john.{time.time()}@mail.com",
     "password": "Coxinha123",
-    "name": f"John {time.time()}"
+    "name": f"John {time.time()}",
+    "role": "teacher"
   }
 
 @pytest.fixture()
@@ -58,8 +59,9 @@ async def test_validate_login(create_user_usecase, setup_user_data):
   email = setup_user_data["email"]
   password = setup_user_data["password"]
   name = setup_user_data["name"]
+  role = setup_user_data["role"]
   create_user = create_user_usecase["create_user"]
-  await create_user.execute(name, email, password)
+  await create_user.execute(name, email, password, role)
   login = create_user_usecase["login"]
   login_response = await login.execute(email, password)
   authenticator_gateway = create_user_usecase["authenticator_gateway"]
@@ -74,8 +76,9 @@ async def test_login_with_invalid_password_should_fail(create_user_usecase, setu
   email = setup_user_data["email"]
   password = setup_user_data["password"]
   name = setup_user_data["name"]
+  role = setup_user_data["role"]
   create_user = create_user_usecase["create_user"]
-  await create_user.execute(name, email, password)
+  await create_user.execute(name, email, password, role)
   login = create_user_usecase["login"]
   with pytest.raises(AuthenticationError) as exc_info:
     await login.execute(email, 'wrong_password')

@@ -14,7 +14,8 @@ async def test_validate_login():
     user_data = {
       "password": "Coxinha123",
       "email": f"john.doe{timestamp}@example.com",
-      "name": f"John {timestamp}"
+      "name": f"John {timestamp}",
+      "role": "teacher"
     }
     create_response = await client.post(
       f"{os.getenv('APPLICATION_URL')}/users",

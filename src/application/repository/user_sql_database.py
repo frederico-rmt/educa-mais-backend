@@ -10,11 +10,11 @@ class UserSqlDatabase(IUserRepository):
     self._schema = 'educa_mais'
 
   async def create_user(self, user: User):
-    query = f'INSERT INTO "{self._schema}"."{self._table}" (name, email, password) VALUES (%s, %s, %s)'
-    await self._driver.query(query, [user.name, user.email.value, user.password])
+    query = f'INSERT INTO "{self._schema}"."{self._table}" (name, email, password, role) VALUES (%s, %s, %s, %s)'
+    await self._driver.query(query, [user.name, user.email.value, user.password, user.role])
 
   async def get_user(self, email: str) -> User:
-    query = f'SELECT name, email, password FROM "{self._schema}"."{self._table}" WHERE email = %s'
+    query = f'SELECT name, email, password, role FROM "{self._schema}"."{self._table}" WHERE email = %s'
     row = await self._driver.query(query, [email])
     if not row:
       raise ValueError("User not found")
@@ -22,5 +22,6 @@ class UserSqlDatabase(IUserRepository):
     name = user_data[0]
     email_vo = Email(user_data[1])
     password = user_data[2]
-    user = User(name, email_vo, password)
+    role = user_data[3]
+    user = User(name, email_vo, password, role)
     return user

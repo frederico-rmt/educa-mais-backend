@@ -15,7 +15,8 @@ async def test_should_create_and_get_user():
     input_data = {
       "password": "Coxinha123",
       "email": f"john.doe{timestamp}@example.com",
-      "name": f"John {timestamp}"
+      "name": f"John {timestamp}",
+      "role": "teacher"
     }
     create_response = await client.post(
       f"{os.getenv('APPLICATION_URL')}/users",

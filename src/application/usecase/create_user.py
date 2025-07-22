@@ -15,9 +15,9 @@ class CreateUser():
     self._user_repository = user_repository
     self._hasher = hasher
 
-  async def execute(self, name: str, email: str, password: str):
+  async def execute(self, name: str, email: str, password: str, role: str):
     raw_password = RawPassword(password)
     hashed_password = self._hasher.encrypt(raw_password.value)
     email = Email(email)
-    user = User(name, email, hashed_password)
+    user = User(name, email, hashed_password, role)
     await self._user_repository.create_user(user)

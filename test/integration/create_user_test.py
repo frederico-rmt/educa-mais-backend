@@ -26,7 +26,8 @@ def setup_user_data():
   return {
     "email": f"john.{time.time()}@mail.com",
     "password": "Coxinha123",
-    "name": f"John {time.time()}"
+    "name": f"John {time.time()}",
+    "role": "teacher"
   }
 
 @pytest.fixture()
@@ -53,10 +54,13 @@ async def test_create_user(setup_user_data, create_user_usecase):
   email = setup_user_data["email"]
   password = setup_user_data["password"]
   name = setup_user_data["name"]
+  role = setup_user_data["role"]
   create_user = create_user_usecase["create_user"]
   get_user = create_user_usecase["get_user"]
-  await create_user.execute(name, email, password)
+  await create_user.execute(name, email, password, role)
   user = await get_user.execute(email)
   assert user.email.value == email
+  assert user.name == name
+  assert user.role == role
   hasher = create_user_usecase["hasher"]
   assert hasher.decrypt(password, user.password) == True
