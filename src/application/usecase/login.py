@@ -27,6 +27,7 @@ class Login:
     user_payload = {
       "email": user.email.value,
       "name": user.name,
+      "id": user.id.value,
       "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=6),
     }
     token = self._authenticator.generate_token(user_payload)

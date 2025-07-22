@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 import pytest
 import time
+from src.domain.value_objects.uuid_identifier import UuidIdentifier
 from src.infra.database.pg_driver import PgDriver
 from src.application.repository.user_sql_database import UserSqlDatabase
 from src.application.usecase.create_user import CreateUser
@@ -59,6 +60,7 @@ async def test_create_user(setup_user_data, create_user_usecase):
   get_user = create_user_usecase["get_user"]
   await create_user.execute(name, email, password, role)
   user = await get_user.execute(email)
+  assert isinstance(user.id, UuidIdentifier)
   assert user.email.value == email
   assert user.name == name
   assert user.role == role

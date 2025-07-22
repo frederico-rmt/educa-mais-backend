@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from src.domain.value_objects.uuid_identifier import UuidIdentifier
+from src.helpers.uuid_generator import UuidGenerator
 from src.application.repository.user_repository import IUserRepository
 from src.domain.entities.user import User
 from src.domain.value_objects.email import Email
@@ -16,8 +18,10 @@ class CreateUser():
     self._hasher = hasher
 
   async def execute(self, name: str, email: str, password: str, role: str):
+    uuid = UuidGenerator.generate()
+    id = UuidIdentifier(uuid)
     raw_password = RawPassword(password)
     hashed_password = self._hasher.encrypt(raw_password.value)
     email = Email(email)
-    user = User(name, email, hashed_password, role)
+    user = User(id, name, email, hashed_password, role)
     await self._user_repository.create_user(user)

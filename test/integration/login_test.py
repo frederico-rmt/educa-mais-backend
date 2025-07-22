@@ -3,6 +3,8 @@ import os
 import time
 from dotenv import load_dotenv
 import pytest
+from src.domain.value_objects.uuid_identifier import UuidIdentifier
+from src.helpers.uuid_generator import UuidGenerator
 from src.application.repository.user_sql_database import UserSqlDatabase
 from src.application.usecase.create_user import CreateUser
 from src.application.usecase.login import AuthenticationError, Login
@@ -66,6 +68,8 @@ async def test_validate_login(create_user_usecase, setup_user_data):
   login_response = await login.execute(email, password)
   authenticator_gateway = create_user_usecase["authenticator_gateway"]
   assert login_response["token_type"] == 'bearer'
+  id = UuidIdentifier(login_response["user"]["id"])
+  assert id.value == login_response["user"]["id"]
   assert login_response["user"]["email"] == email
   assert login_response["user"]["name"] == name
   decoded_token = authenticator_gateway.decode_token(login_response["access_token"])
