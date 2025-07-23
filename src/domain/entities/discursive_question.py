@@ -4,7 +4,7 @@ class DiscursiveQuestion:
   def __init__(
     self,
     id: UuidIdentifier,
-    authorId: UuidIdentifier,
+    id_author: UuidIdentifier,
     title: str,
     prompt: str,
     expected_answer: str,
@@ -17,8 +17,8 @@ class DiscursiveQuestion:
   ):
     if not id or not isinstance(id, UuidIdentifier):
       raise ValueError("id must be an UuidIdentifier")
-    if not authorId or not isinstance(authorId, UuidIdentifier):
-      raise ValueError("authorId must be an UuidIdentifier")
+    if not id_author or not isinstance(id_author, UuidIdentifier):
+      raise ValueError("id_author must be an UuidIdentifier")
     if not title:
       raise ValueError("title is required")
     if not prompt:
@@ -38,7 +38,7 @@ class DiscursiveQuestion:
     if created_at is None:
       raise ValueError("created_at is required")
     self.id = id
-    self.authorId = authorId
+    self.id_author = id_author
     self.title = title
     self.prompt = prompt
     self.expected_answer = expected_answer

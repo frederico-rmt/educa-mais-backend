@@ -19,15 +19,26 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.create_table('users',
-        sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
-        sa.Column('uuid', sa.String, nullable=False),
-        sa.Column('name', sa.String, nullable=False),
-        sa.Column('email', sa.String, unique=True, nullable=False),
-        sa.Column('password', sa.String, nullable=False),
-        sa.Column('role', sa.String, nullable=False),
-        schema='educa_mais'
-    )
+  op.create_table('users',
+    sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
+    sa.Column('uuid', sa.String, nullable=False, unique=True),
+    sa.Column('name', sa.String, nullable=False),
+    sa.Column('email', sa.String, unique=True, nullable=False),
+    sa.Column('password', sa.String, nullable=False),
+    sa.Column('role', sa.String, nullable=False),
+    schema='educa_mais'
+  )
+
+  op.execute("""
+    INSERT INTO educa_mais.users (uuid, name, email, password, role)
+    VALUES (
+      'b372c8fc-67fd-4565-aed2-2a159d2fd80d',
+      'teacher1',
+      'teacher1@example.com',
+      '$2b$12$XX0ZmgezHunoyvzUWm/0c.vuyfhFO.f4oRBvPoTiCIWZ//OwDub46',
+      'teacher'
+    );
+  """)
 
 def downgrade() -> None:
-    op.drop_table('user', schema='educa_mais')
+  op.drop_table('users', schema='educa_mais')
