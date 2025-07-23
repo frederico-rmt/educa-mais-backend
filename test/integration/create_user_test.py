@@ -6,7 +6,6 @@ from src.domain.value_objects.uuid_identifier import UuidIdentifier
 from src.infra.database.pg_driver import PgDriver
 from src.application.repository.user_sql_database import UserSqlDatabase
 from src.application.usecase.create_user import CreateUser
-from src.application.usecase.create_user import CreateUserInput
 from src.infra.hasher.bcrypt_driver import BCryptDriver
 from src.application.usecase.get_user import GetUser
 from src.infra.hasher.hasher_gateway import HasherGateway
@@ -66,3 +65,14 @@ async def test_create_user(setup_user_data, create_user_usecase):
   assert user.role == role
   hasher = create_user_usecase["hasher"]
   assert hasher.decrypt(password, user.password) == True
+
+async def test_create_user_with_duplicate_email(setup_user_data, create_user_usecase):
+  email = 'teacher1@example.com'
+  password = setup_user_data["password"]
+  name = setup_user_data["name"]
+  role = setup_user_data["role"]
+  create_user = create_user_usecase["create_user"]
+  get_user = create_user_usecase["get_user"]
+  with pytest.raises(ValueError) as exc_info:
+    await create_user.execute(name, email, password, role)
+  assert str(exc_info.value) == "Email already registered"

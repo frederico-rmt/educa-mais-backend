@@ -11,8 +11,13 @@ class UserSqlDatabase(IUserRepository):
     self._schema = 'educa_mais'
 
   async def create_user(self, user: User):
-    query = f'INSERT INTO "{self._schema}"."{self._table}" (uuid, name, email, password, role) VALUES (%s, %s, %s, %s, %s)'
-    await self._driver.query(query, [user.id.value, user.name, user.email.value, user.password, user.role])
+    try:
+      query = f'INSERT INTO "{self._schema}"."{self._table}" (uuid, name, email, password, role) VALUES (%s, %s, %s, %s, %s)'
+      await self._driver.query(query, [user.id.value, user.name, user.email.value, user.password, user.role])
+    except Exception as e:
+      if 'duplicate key value violates unique constraint' in str(e):
+        raise ValueError("Email already registered") from e
+      raise e
 
   async def get_user(self, email: str) -> User:
     query = f'SELECT uuid, name, email, password, role FROM "{self._schema}"."{self._table}" WHERE email = %s'
