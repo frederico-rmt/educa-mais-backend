@@ -1,6 +1,8 @@
 import os
 import time
 from dotenv import load_dotenv
+from src.application.controller.discursive_question_controller import DiscursiveQuestionController
+from src.application.repository.discursive_question_sql_database import DiscursiveQuestionSqlDatabase
 from src.infra.authenticator.jwt_driver import JWTDriver
 from src.application.controller.user_controller import UserController
 from src.application.repository.user_sql_database import UserSqlDatabase
@@ -22,8 +24,10 @@ pgDriver = PgDriver(
 )
 bCryptDriver = BCryptDriver(int(os.getenv("BCRYPT_SALTS")))
 user_repository = UserSqlDatabase(pgDriver)
+discursive_question_repository = DiscursiveQuestionSqlDatabase(pgDriver)
 
 UserController(http, user_repository, bCryptDriver, authenticator)
+DiscursiveQuestionController(http, discursive_question_repository)
 
 app = http.app
 

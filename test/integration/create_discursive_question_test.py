@@ -30,8 +30,7 @@ def setup_question_data():
     "tags": ["world war", "europe"],
     "topic": "history",
     "difficulty": "medium",
-    "grade_level": 9,
-    "created_at": time.time()
+    "grade_level": 9
   }
 
 @pytest.fixture()
