@@ -29,8 +29,9 @@ class UserController:
       email = body['email']
       password = body['password']
       name = body['name']
+      role = body['role']
       create_user = CreateUser(self._user_database, self._hasher_gateway)
-      await create_user.execute(name, email, password)
+      await create_user.execute(name, email, password, role)
       return {'message': 'account-created'}
     return handler
 

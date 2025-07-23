@@ -2,10 +2,10 @@ from dotenv import load_dotenv
 import os
 import pytest
 import time
+from src.domain.value_objects.uuid_identifier import UuidIdentifier
 from src.infra.database.pg_driver import PgDriver
 from src.application.repository.user_sql_database import UserSqlDatabase
 from src.application.usecase.create_user import CreateUser
-from src.application.usecase.create_user import CreateUserInput
 from src.infra.hasher.bcrypt_driver import BCryptDriver
 from src.application.usecase.get_user import GetUser
 from src.infra.hasher.hasher_gateway import HasherGateway
@@ -26,7 +26,8 @@ def setup_user_data():
   return {
     "email": f"john.{time.time()}@mail.com",
     "password": "Coxinha123",
-    "name": f"John {time.time()}"
+    "name": f"John {time.time()}",
+    "role": "teacher"
   }
 
 @pytest.fixture()
@@ -53,10 +54,25 @@ async def test_create_user(setup_user_data, create_user_usecase):
   email = setup_user_data["email"]
   password = setup_user_data["password"]
   name = setup_user_data["name"]
+  role = setup_user_data["role"]
   create_user = create_user_usecase["create_user"]
   get_user = create_user_usecase["get_user"]
-  await create_user.execute(name, email, password)
+  await create_user.execute(name, email, password, role)
   user = await get_user.execute(email)
+  assert isinstance(user.id, UuidIdentifier)
   assert user.email.value == email
+  assert user.name == name
+  assert user.role == role
   hasher = create_user_usecase["hasher"]
   assert hasher.decrypt(password, user.password) == True
+
+async def test_create_user_with_duplicate_email(setup_user_data, create_user_usecase):
+  email = 'teacher1@example.com'
+  password = setup_user_data["password"]
+  name = setup_user_data["name"]
+  role = setup_user_data["role"]
+  create_user = create_user_usecase["create_user"]
+  get_user = create_user_usecase["get_user"]
+  with pytest.raises(ValueError) as exc_info:
+    await create_user.execute(name, email, password, role)
+  assert str(exc_info.value) == "Email already registered"
