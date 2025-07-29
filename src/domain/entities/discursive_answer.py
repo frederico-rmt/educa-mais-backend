@@ -7,7 +7,7 @@ class DiscursiveAnswer:
     id_question: UuidIdentifier,
     id_student: UuidIdentifier,
     answer: str,
-    grade: float | None,
+    grade: int | None,
     feedback: str | None,
     created_at: int,
     corrected_at: int | None

@@ -8,3 +8,5 @@ python-dotenv
 pyjwt
 cryptography
 jwcrypto
+langchain[openai]
+google-genai

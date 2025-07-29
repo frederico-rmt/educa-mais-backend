@@ -40,5 +40,16 @@ def upgrade() -> None:
     );
   """)
 
+  op.execute("""
+    INSERT INTO educa_mais.users (uuid, name, email, password, role)
+    VALUES (
+      'ea8996d0-7968-4126-8a24-7970e2142b82',
+      'student1',
+      'student1@example.com',
+      '$2b$12$XX0ZmgezHunoyvzUWm/0c.vuyfhFO.f4oRBvPoTiCIWZ//OwDub46',
+      'student'
+    );
+  """)
+
 def downgrade() -> None:
   op.drop_table('users', schema='educa_mais')
