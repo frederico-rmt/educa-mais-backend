@@ -21,7 +21,7 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
   op.create_table('discursive_questions',
     sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
-    sa.Column('uuid', sa.String, nullable=False),
+    sa.Column('uuid', sa.String, nullable=False, unique=True),
     sa.Column('id_author', sa.String, sa.ForeignKey('educa_mais.users.uuid'), nullable=False),
     sa.Column('title', sa.String, nullable=False),
     sa.Column('prompt', sa.String, nullable=False),

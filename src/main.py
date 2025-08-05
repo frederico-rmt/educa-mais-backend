@@ -1,6 +1,10 @@
 import os
 import time
 from dotenv import load_dotenv
+from src.application.controller.discursive_answer_controller import DiscursiveAnswerController
+from src.application.repository.discursive_answer_sql_database import DiscursiveAnswerSqlDatabase
+from src.infra.ai.google_genai_driver import GoogleGenAIDriver
+from src.infra.ai.question_ai_feedback_gateway import QuestionAIFeedbackGateway
 from src.application.controller.discursive_question_controller import DiscursiveQuestionController
 from src.application.repository.discursive_question_sql_database import DiscursiveQuestionSqlDatabase
 from src.infra.authenticator.jwt_driver import JWTDriver
@@ -25,9 +29,14 @@ pgDriver = PgDriver(
 bCryptDriver = BCryptDriver(int(os.getenv("BCRYPT_SALTS")))
 user_repository = UserSqlDatabase(pgDriver)
 discursive_question_repository = DiscursiveQuestionSqlDatabase(pgDriver)
+discursive_answer_repository = DiscursiveAnswerSqlDatabase(pgDriver)
+
+google_genai_driver = GoogleGenAIDriver(os.getenv("GEMINI_API_KEY"), os.getenv("GEMINI_MODEL"))
+question_ai_gateway = QuestionAIFeedbackGateway(google_genai_driver)
 
 UserController(http, user_repository, bCryptDriver, authenticator)
 DiscursiveQuestionController(http, discursive_question_repository)
+DiscursiveAnswerController(http, discursive_answer_repository, discursive_question_repository, question_ai_gateway)
 
 app = http.app
 
